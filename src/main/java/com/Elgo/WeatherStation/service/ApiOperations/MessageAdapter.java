@@ -1,5 +1,7 @@
-package com.Elgo.WeatherStation.model;
+package com.Elgo.WeatherStation.service.ApiOperations;
 
+import com.Elgo.WeatherStation.model.WeatherMessageData;
+import com.Elgo.WeatherStation.model.WeatherStationMessage;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -22,7 +24,7 @@ public class MessageAdapter {
     }
 
 
-    public WeatherStationMessage createStationMessage(Long Station_id,String Battery_status,Long S_no){
+    public WeatherStationMessage createStationMessage(Long Station_id, String Battery_status, Long S_no){
 
         ApiWeatherStatusGetter apiWeatherStatusGetter = new ApiWeatherStatusGetter();
 

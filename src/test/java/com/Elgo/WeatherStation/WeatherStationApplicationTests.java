@@ -16,7 +16,7 @@ class WeatherStationApplicationTests {
 				new Schema.Field("s_no", Schema.create(Schema.Type.LONG), null, null),
 				new Schema.Field("battery_status", Schema.create(Schema.Type.STRING), null, null),
 				new Schema.Field("status_timestamp", Schema.create(Schema.Type.LONG), null, null),
-				new Schema.Field("weatherMessageData", WeatherMessageData.getAvroSchema(), null, null)
+				new Schema.Field("weatherMessageData", WeatherMessageData.getWeatherMessageDataAvroSchema(), null, null)
 		));
 		return schema.toString();
 	}

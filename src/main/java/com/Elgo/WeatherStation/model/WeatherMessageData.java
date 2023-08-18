@@ -15,7 +15,7 @@ public class WeatherMessageData {
     private   Integer temperature;
     private   Integer wind_speed;
 
-    public static Schema getAvroSchema() {
+    public static Schema getWeatherMessageDataAvroSchema() {
         Schema schema = Schema.createRecord("WeatherMessageData", null, null, false);
         schema.setFields(Arrays.asList(
                 new Schema.Field("temperature", Schema.create(Schema.Type.INT), null, null),

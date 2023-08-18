@@ -1,6 +1,6 @@
 package com.Elgo.WeatherStation.model;
 
-import static org.junit.jupiter.api.Assertions.*;
+import com.Elgo.WeatherStation.service.ApiOperations.MessageAdapter;
 
 class MessageAdapterTest {
 

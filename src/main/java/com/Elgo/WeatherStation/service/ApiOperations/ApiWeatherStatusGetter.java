@@ -1,4 +1,5 @@
-package com.Elgo.WeatherStation.model;
+package com.Elgo.WeatherStation.service.ApiOperations;
+
 
 import lombok.Data;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -45,7 +46,7 @@ public class ApiWeatherStatusGetter {
 
             responseString = response.toString();
             // print response content
-           log.info("Response String"+responseString);
+            log.info("Response String"+responseString);
         } catch (MalformedURLException | ProtocolException e1) {
             throw new RuntimeException(e1);
         } catch (IOException e) {

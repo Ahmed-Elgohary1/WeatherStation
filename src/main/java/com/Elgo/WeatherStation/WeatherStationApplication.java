@@ -1,20 +1,13 @@
 package com.Elgo.WeatherStation;
 
-import com.Elgo.WeatherStation.model.MessageAdapter;
+import com.Elgo.WeatherStation.service.ApiOperations.MessageAdapter;
 import com.Elgo.WeatherStation.model.WeatherStationMessage;
-import org.apache.avro.Schema;
-import org.apache.avro.generic.GenericData;
-import org.apache.avro.generic.GenericRecord;
 import org.apache.kafka.clients.producer.KafkaProducer;
-import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerRecord;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.kafka.retrytopic.DestinationTopic;
 
 import java.util.Properties;
 
-import static com.Elgo.WeatherStation.model.WeatherStationMessage.getAvroSchema;
+//import static com.Elgo.WeatherStation.model.WeatherStationMessage.getAvroSchema;
 
 
 public class WeatherStationApplication {
@@ -42,30 +35,45 @@ public class WeatherStationApplication {
 		props.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
 		props.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer");
 
+		/*
+		props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG,
+				org.apache.kafka.common.serialization.StringSerializer.class);
+		props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG,
+				io.confluent.kafka.serializers.KafkaAvroSerializer.class);
+		props.put("schema.registry.url", "http://localhost:8081");
+		 */
+
 		return props;
 	}
 
-	private static GenericRecord setRecordConfig(){
-		Schema schema=getAvroSchema();
-		GenericRecord avroRecord = new GenericData.Record(schema);
-		return avroRecord;
-	}
+
 
 	public static void main(String[] args) {
 
 	// Set Kafka producer properties
 		Properties properties=getKafkaProducerProps();
+
+
 		// Create a Kafka producer
-		KafkaProducer<String, String> producer = new KafkaProducer<String, String>(properties);
+		KafkaProducer producer = new KafkaProducer(properties);
 
 		MessageAdapter messageAdapter=MessageAdapter.getInstance();
 
 		// Send messages
-		for (int i = 0; i < 10; i++) {
+		for (int i = 0; i < 1; i++) {
 
 
 			WeatherStationMessage weatherStationMessage=messageAdapter.createStationMessage(1L,"Low",5L);
+           /*
+			AvroEncoder avroEncoder=new AvroEncoder();
+			GenericRecord avroRecord= avroEncoder.createEncodedRecord(weatherStationMessage);
+			ProducerRecord<Object, Object> record = new ProducerRecord<>("my-topic", avroRecord);
+			*/
+
 			producer.send(new ProducerRecord<String, String>("my-topic", weatherStationMessage.toString()));
+
+			//producer.send(record);
+
 		}
 
 		// Close the producer
