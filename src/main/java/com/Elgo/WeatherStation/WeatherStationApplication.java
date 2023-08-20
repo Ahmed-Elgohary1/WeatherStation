@@ -2,12 +2,13 @@ package com.Elgo.WeatherStation;
 
 import com.Elgo.WeatherStation.service.ApiOperations.MessageAdapter;
 import com.Elgo.WeatherStation.model.WeatherStationMessage;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 
 import java.util.Properties;
 
-//import static com.Elgo.WeatherStation.model.WeatherStationMessage.getAvroSchema;
 
 
 public class WeatherStationApplication {
@@ -48,7 +49,7 @@ public class WeatherStationApplication {
 
 
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws JsonProcessingException {
 
 	// Set Kafka producer properties
 		Properties properties=getKafkaProducerProps();
@@ -59,6 +60,8 @@ public class WeatherStationApplication {
 
 		MessageAdapter messageAdapter=MessageAdapter.getInstance();
 
+		ObjectMapper mapper = new ObjectMapper();
+
 		// Send messages
 		for (int i = 0; i < 1; i++) {
 
@@ -68,11 +71,14 @@ public class WeatherStationApplication {
 			AvroEncoder avroEncoder=new AvroEncoder();
 			GenericRecord avroRecord= avroEncoder.createEncodedRecord(weatherStationMessage);
 			ProducerRecord<Object, Object> record = new ProducerRecord<>("my-topic", avroRecord);
+
+			producer.send(record);
 			*/
 
-			producer.send(new ProducerRecord<String, String>("my-topic", weatherStationMessage.toString()));
+			System.out.println(weatherStationMessage.toJson());
 
-			//producer.send(record);
+			producer.send(new ProducerRecord<String, String>("my-topic", weatherStationMessage.toJson()));
+
 
 		}
 

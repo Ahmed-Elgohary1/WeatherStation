@@ -26,7 +26,7 @@ public class MessageAdapter {
 
     public WeatherStationMessage createStationMessage(Long Station_id, String Battery_status, Long S_no){
 
-        ApiWeatherStatusGetter apiWeatherStatusGetter = new ApiWeatherStatusGetter();
+        ApiWeatherStatusGetter apiWeatherStatusGetter = ApiWeatherStatusGetter.getInstance();
 
         JSONObject jsonObject = apiWeatherStatusGetter.getApiResponse();
         WeatherMessageData weatherMessageData=new WeatherMessageData();
@@ -62,11 +62,10 @@ public class MessageAdapter {
 
     public static int findInArray(String target, JSONArray array) throws JSONException {
 
-        for (int i = 0; i < array.length(); i++) {
-            if (array.getString(i).equals(target)) {
+        for (int i = 0; i < array.length(); i++)
+            if (array.getString(i).equals(target))
                 return i;
-            }
-        }
+
         return -1;
     }
 

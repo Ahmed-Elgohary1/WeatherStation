@@ -17,6 +17,26 @@ import java.io.InputStreamReader;
 import java.util.logging.Logger;
 @Data
 public class ApiWeatherStatusGetter {
+
+
+
+    private static ApiWeatherStatusGetter instance;
+
+    private ApiWeatherStatusGetter() { }
+
+    public static ApiWeatherStatusGetter getInstance() {
+        if (instance == null) {
+            synchronized (ApiWeatherStatusGetter.class) {
+                if (instance == null) {
+                    instance = new ApiWeatherStatusGetter();
+                }
+            }
+        }
+        return instance;
+    }
+
+
+
     private static final Logger log = Logger.getLogger(ApiWeatherStatusGetter.class.getName());
     private static final String ENDPOINT_URL ="https://api.open-meteo.com/v1/forecast?latitude=52.52&longitude=13.41&hourly=temperature_2m,relativehumidity_2m,windspeed_10m&current_weather=true&temperature_unit=fahrenheit&forecast_days=1";
     CloseableHttpClient httpClient = HttpClients.createDefault();

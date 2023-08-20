@@ -1,12 +1,19 @@
 package com.Elgo.WeatherStation.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import org.apache.avro.Schema;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.io.Serializable;
+import java.time.Instant;
 
 import java.util.Arrays;
 
 @Data
-public class WeatherStationMessage {
+public class WeatherStationMessage implements Serializable {
 
    private Long station_id;
    private Long s_no;
@@ -17,9 +24,17 @@ public class WeatherStationMessage {
 
 
 
-   public String say(){
-      return "A7A";
+   public String toJson() throws JsonProcessingException {
+      ObjectMapper mapper = new ObjectMapper();
+      mapper.addMixIn(WeatherStationMessage.class, ExcludeAvroSchemaMixin.class); // exclude the Avro schema field
+      return mapper.writeValueAsString(this);
    }
+
+   private abstract static class ExcludeAvroSchemaMixin {
+      @JsonIgnore
+      private Object weatherStationMessageAvroSchema;
+   }
+   /*
    public  Schema getWeatherStationMessageAvroSchema() {
 
       Schema schema = Schema.createRecord("WeatherStationMessage", null, null, false);
@@ -32,4 +47,6 @@ public class WeatherStationMessage {
       ));
       return schema;
    }
+
+    */
 }
