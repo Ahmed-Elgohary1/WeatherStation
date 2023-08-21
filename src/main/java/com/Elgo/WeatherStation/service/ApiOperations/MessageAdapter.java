@@ -40,7 +40,7 @@ public class MessageAdapter {
         temp= jsonObject.getJSONObject("current_weather").getInt("temperature");
         speed= jsonObject.getJSONObject("current_weather").getInt("windspeed");
 
-        String timeStamp = jsonObject.getJSONObject("current_weather").getString("time");
+        Integer timeStamp = jsonObject.getJSONObject("current_weather").getInt("time");
         JSONArray allHours = jsonObject.getJSONObject("hourly").getJSONArray("time");
         int timeIndex = findInArray(timeStamp,allHours);
         hum=jsonObject.getJSONObject("hourly").getJSONArray("relativehumidity_2m").getInt(timeIndex);
@@ -50,20 +50,22 @@ public class MessageAdapter {
         weatherMessageData.setHumidity(hum);
         weatherMessageData.setWind_speed(speed);
 
+
         WeatherStationMessage weatherStationMessage=new WeatherStationMessage();
         weatherStationMessage.setStation_id(Station_id);
         weatherStationMessage.setBattery_status(Battery_status);
         weatherStationMessage.setS_no(S_no);
+        weatherStationMessage.setStatus_timestamp(Long.valueOf(timeStamp));
         weatherStationMessage.setWeatherMessageData(weatherMessageData);
 
     return weatherStationMessage;
     }
 
 
-    public static int findInArray(String target, JSONArray array) throws JSONException {
+    public static int findInArray(Integer target, JSONArray array) throws JSONException {
 
         for (int i = 0; i < array.length(); i++)
-            if (array.getString(i).equals(target))
+            if (array.getNumber(i).equals(target))
                 return i;
 
         return -1;
